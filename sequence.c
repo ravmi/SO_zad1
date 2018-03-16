@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
     bool set[SET_SIZE] = { false };
     bool occurences[SET_SIZE] = { false };
     char buf[CHUNK_SIZE];
-    while (loaded_chunk_size = read(fdsc, buf, CHUNK_SIZE)) {
+    while ((loaded_chunk_size = read(fdsc, buf, CHUNK_SIZE))) {
         if (loaded_chunk_size == -1) {
             return 1;
         }
