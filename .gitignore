@@ -1,2 +1,4 @@
 ./examples/binmake
 .*
+sequence.o
+.gitignore
