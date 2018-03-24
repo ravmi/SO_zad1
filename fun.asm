@@ -39,11 +39,20 @@ read_to_buf:
     syscall
     ret
 
-close_file;
+close_file:
     mov rax, 3 ;close
     mov rdi, [fd_in]
     syscall
     ret
+
+clean_occurences:
+    mov [current_counter], 0
+    mov rax, 0
+    clean_loop:
+        mov [occurences + rax], 0
+        inc rax
+        cmp rax, set_size
+        jne clean_loop
 
 _start:
   ;rbx, r12-r15
