@@ -41,16 +41,14 @@ int main(int argc, char **argv) {
             if (!zero_occured) {
                 if (val == 0) {
                     zero_occured = true;
-                }
-                else {
-                    if (set[val]) {
+                } else  if (set[val]) {
                         return 1;
                     }
                     else {
                         set[val] = true;
                         ++should_be_counter;
                     }
-                }
+                
             }
             else {
                 if (val != 0) {

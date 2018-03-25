@@ -28,7 +28,61 @@ ld --fatal-warnings -o sequence sequence.o
 
 
 
+
+Przeczytać laby całe
+zrobić zadanka
+zebrać uwagi
+
+
 Ogarnąć:
-- jak podzielić na funkcje
-- jak zrobic tablice
-- jak wczytywać pliki
+- jak podzielić na funkcje | DONE, po dwukropku
+- jak zrobic tablice       | Done, przez te deklaracje (doczytac)
+- jak wczytywać pliki      | done, syscalle, doczytac
+- stos
+
+poczytaj o assemly sections
+https://www.tutorialspoint.com/assembly_programming/assembly_basic_syntax.htm
+
+napisz wywolanie funkcji w c i assembly
+
+
+
+dziwna konwencja na 64 bitach
+
+Argumenty funkcji przekazuje się w rejestrach rdi, rsi, rdx, rcx, r8 i r9. Jeśli jest ich więcej, to kolejne umieszcza się na stosie, a stos czyści funkcja wołająca. Jeśli funkcja zmieni wartość któregoś z rejestrów rbx, rsp, rbp i r12 do r15, musi przywrócić jego wartość, jaka była przy wchodzeniu do funkcji (tuż po wywołaniu instrukcji call). Wartość funkcji znajdzie się zwykle w rejestrze rax lub w parze rejestrów rax i rdx. Przy wchodzeniu do funkcji wartość wskaźnika stosu musi być podzielna przez 16. 
+
+
+
+foo:
+  call   bar1
+foo_loop:
+  call   bar2
+  test   rax, rax
+  js     foo_exit
+  jmp    foo_loop
+foo_exit:
+  ret
+
+
+sekcja .text - kod wykonywalny
+zmienne globalne - .data
+zmienne globalne inicjowane zerami - .bss
+zmienne globalne tylko do odczytu - .rodata
+
+
+
+
+    DB - Define Byte. 8 bits
+    DW - Define Word. Generally 2 bytes on a typical x86 32-bit system
+    DD - Define double word. Generally 4 bytes on a typical x86 32-bit system
+
+
+The pop instruction removes the 4-byte data element from the top of the hardware-supported stack into the specified operand (i.e. register or memory location). It first moves the 4 bytes located at memory location [SP] into the specified register or memory location, and then increments SP by 4.
+
+
+
+gdb
+si zeby robic kroczek
+i r rsi to print
+
+layout asm
