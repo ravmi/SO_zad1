@@ -134,30 +134,30 @@ _start:
             ;iterator reached the limit, we have to read a new chunk of data
             je read_chunks_zero_occured_loop
             mov r13, 0
-            mov r13b, [buf + r11] ; the value in this iteration is in rdx := r13
-            inc r11                ;increment loop counter
+            mov r13b, [buf + r11]  ; the value in this iteration is r13
+            inc r11                ; increment loop counter
 
             cmp r13, 0
             jne val_not_zero_2
-            ;otherwise
 
-            val_is_zero_2: ;otherwise
-                cmp r14, r15 
-                jne read_done_fail
-                ;othwerise
+            ;otherwise (value is zero)
+            val_is_zero_2:
+                cmp r14, r15       ; check if size of segment is equal to set size
+                jne read_done_fail ; error if it is
+                ;otherwise clean counter and occurences array
                 call clean_occurences
                 jmp process_chunk_zero_occured_loop
             val_not_zero_2:
                 mov al, 0
-                cmp [set + r13], al      ; is the value in the set
-                je read_done_fail
+                cmp [set + r13], al             ; is the value in the set
+                je read_done_fail               ; if it isn't it's an error
                 mov al, 1
-                cmp [occurences + r13], al    ;did the value already occur
-                je read_done_fail
-                ;othwerise
-                mov [occurences + r13], al      ;mark that it occured
-                inc r14                         ;increment current set size
-                jmp process_chunk_zero_occured_loop ; continue the innter loop if it's not
+                cmp [occurences + r13], al      ; did the value already occur
+                je read_done_fail               ; error if it did
+                ; otherwise (value is in set and it didn't occur in this segment yet)
+                mov [occurences + r13], al      ; mark that it occured
+                inc r14                         ; increment current set size
+                jmp process_chunk_zero_occured_loop
 
     read_done_ok:
         call close_file
