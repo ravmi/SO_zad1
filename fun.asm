@@ -121,12 +121,12 @@ _start:
                 call read_done_fail
 
     read_chunks_zero_occured_loop: ; we read from the file here, zero did not occur yet
-        call read_to_buf     ; rax keeps number of read bytes
-        mov r12, rax         ; r12 - size of chunk
-        cmp r12, -1          ; error?
-        jle read_done_fail   ; negative means error while reading
-        cmp r12, 0           ; end of the file?
-        je read_done_ok      ; leave the loop and end the program
+        call read_to_buf      ; rax keeps number of read bytes
+        mov r12, rax          ; r12 - size of chunk
+        cmp r12, -1           ; error?
+        jle read_done_fail    ; negative means error while reading
+        cmp r12, 0            ; end of the file?
+        je check_if_last_zero ; leave the loop and check conditions for success
 
         mov r11, 0
         process_chunk_zero_occured_loop:
@@ -166,3 +166,8 @@ _start:
     read_done_fail:
         call close_file
         call prog_exit_fail
+    check_if_last_zero:
+        ; means that r14 was cleaned, because zero occured (ready for new segment)
+        cmp r14, 0
+        je read_done_ok        ; file ends with 0, so it's ok
+        jmp read_done_fail     ; file doesn't end with 0, error
